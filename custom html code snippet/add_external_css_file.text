@@ -1,3 +1,4 @@
+<!-- To include particular font type to style, please use the below code.-->
 <!-- Paste the following into your Custom Css section -->
 
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
@@ -5,9 +6,15 @@
 body,h2,h3,h4,span,b {
   font-family: 'Roboto Condensed', sans-serif;
  }
+ 
+ 
+ 
+ 
+ 
  <!-- Paste the following into your Custom Css section -->
  
 @import url('https://fonts.googleapis.com/css?family=Dancing Script');
+
 body,h2,h3,h4,span,b  {
    font-family: Dancing Script, cursive;
 }

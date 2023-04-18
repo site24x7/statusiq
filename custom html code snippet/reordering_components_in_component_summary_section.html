@@ -1,3 +1,5 @@
+<!-- Below code is to reorder the components in the Component Summary section -->
+
 <!-- Paste the following into your Custom Footer section -->
 
 $("#spComponentSummary .widget-list .widget-list-item").sort(sort_li).appendTo('#spComponentSummary .widget-list');
@@ -7,16 +9,16 @@ $("#spComponentSummary .widget-list .widget-list-item").sort(sort_li).appendTo('
 	<script type="text/javascript">
 
    $("#spComponentSummary .widget-list .widget-list-item").each(function( index ) {
-	if($( this ).text().includes('AA Site24x7')){
+	if($( this ).text().includes('Site24x7 Community')){
 		$( this ).attr('data-sort', '4');
      }
 	if($( this ).text().includes('Rest API')){
               $( this ).attr('data-sort', '1');
      }
-	if($( this ).text().includes('a Site24x7')){
+	if($( this ).text().includes('Site24x7 Static Server')){
               $( this ).attr('data-sort', '3');
      }
-     if($( this ).text().includes('Z Site24x7')){
+     if($( this ).text().includes('Site24x7 Website')){
               $( this ).attr('data-sort', '2');
      }
 });

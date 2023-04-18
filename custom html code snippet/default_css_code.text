@@ -1,3 +1,6 @@
+<!-- Below are some of the default classes available -->
+
+
 //Defines the width of the page
 .container {
   width: 100%;

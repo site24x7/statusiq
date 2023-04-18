@@ -3,43 +3,41 @@
 <!-- Paste the following into your Custom Footer section -->
 
 <script  type="text/javascript">
-$( document ).ready(function() {
-		var operationalText = "Operational"
-		var informationalText = "Informational"
-		var degradedText = "Degraded Performance"
-		var partialText = "Partial Outage"
-		var majorText = "Major Outage"
-		
+	
+	$( document ).ready(function() {
+	   var operationalText = "Operational"
+	   var informationalText = "Informational"
+	   var degradedText = "Degraded Performance"
+	   var partialText = "Partial Outage"
+	   var majorText = "Major Outage"
 
-		var newText = function(str) {
-			if (str.indexOf('Operational') != -1) {
-				return str.replace('Operational', operationalText);
-			}
-			if (str.indexOf('Informational') != -1) {
-				return str.replace('Informational', informationalText);
-			}
-			if (str.indexOf('Degraded Performance') != -1) {
-				return str.replace('Degraded Performance', degradedText);
-			}
-			if (str.indexOf('Partial Outage') != -1) {
-				return str.replace('Partial Outage', partialText);
-			}
-			if (str.indexOf('Major Outage') != -1) {
-				return str.replace('Major Outage', majorText);
-			}
+	   var newText = function(str) {
+		if (str.indexOf('Operational') != -1) {
+			return str.replace('Operational', operationalText);
 		}
+		if (str.indexOf('Informational') != -1) {
+			return str.replace('Informational', informationalText);
+		}
+		if (str.indexOf('Degraded Performance') != -1) {
+			return str.replace('Degraded Performance', degradedText);
+		}
+		if (str.indexOf('Partial Outage') != -1) {
+			return str.replace('Partial Outage', partialText);
+		}
+		if (str.indexOf('Major Outage') != -1) {
+			return str.replace('Major Outage', majorText);
+		}
+	    }
 		
-		$('.component-summary .widget-list-item').each(function() {
-			var $this = $(this);
-			var $html = $this.html();
-			$this.html(newText($html));
-		});
+	    $('.component-summary .widget-list-item').each(function() {
+		var $this = $(this);
+		var $html = $this.html();
+		$this.html(newText($html));
+	    });
 
-
-  $('.component-summary .widget-list-item').sort(function(a, b) {
-    return $(b).data('txtcolor') - $(a).data('txtcolor');
-  }).appendTo('.widget-list-item);
-
-
-});
+	  $('.component-summary .widget-list-item').sort(function(a, b) {
+	    return $(b).data('txtcolor') - $(a).data('txtcolor');
+	  }).appendTo('.widget-list-item);
+    });
+		
 </script>

@@ -12,20 +12,23 @@
 	   var majorText = "Major Outage"
 
 	   var newText = function(str) {
-		if (str.indexOf('Operational') != -1) {
-			return str.replace('Operational', operationalText);
+		if (str.indexOf('incident.status.1') != -1) {
+			return str.replace('incident.status.1', operationalText);
 		}
-		if (str.indexOf('Informational') != -1) {
-			return str.replace('Informational', informationalText);
+		if (str.indexOf('incident.status.2') != -1) {
+			return str.replace('incident.status.2', informationalText);
 		}
-		if (str.indexOf('Degraded Performance') != -1) {
-			return str.replace('Degraded Performance', degradedText);
+		if (str.indexOf('incident.status.3') != -1) {
+			return str.replace('incident.status.3', degradedText);
 		}
-		if (str.indexOf('Partial Outage') != -1) {
-			return str.replace('Partial Outage', partialText);
+		if (str.indexOf('incident.status.4') != -1) {
+			return str.replace('incident.status.4', partialText);
 		}
-		if (str.indexOf('Major Outage') != -1) {
-			return str.replace('Major Outage', majorText);
+		if (str.indexOf('incident.status.5') != -1) {
+			return str.replace('incident.status.5', partialText);
+		}
+		if (str.indexOf('incident.status.6') != -1) {
+			return str.replace('incident.status.6', majorText);
 		}
 	    }
 		
@@ -35,9 +38,6 @@
 		$this.html(newText($html));
 	    });
 
-	  $('.component-summary .widget-list-item').sort(function(a, b) {
-	    return $(b).data('txtcolor') - $(a).data('txtcolor');
-	  }).appendTo('.widget-list-item);
     });
 		
 </script>

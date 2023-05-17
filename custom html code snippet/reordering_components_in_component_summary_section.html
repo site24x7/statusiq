@@ -1,10 +1,10 @@
-<!-- Below code is to reorder the components in the Component Summary section -->
+<!-- Below code is to reorder the components in the Component Summary section and in Status History Section-->
 
 <!-- Paste the following into your Custom Footer section -->
 
 <script type="text/javascript">
 
-   $("#spComponentSummary .widget-list .widget-list-item").each(function( index ) {
+   $("#spComponentSummary .widget-list .widget-list-item, #spStatusHistory .widget-list .widget-list-item").each(function( index ) {
 	if($( this ).text().includes('Site24x7 Community')){
 		$( this ).attr('data-sort', '4');
 	}
@@ -19,8 +19,15 @@
 	}
    });
 
-  $("#spComponentSummary .widget-list .widget-list-item").sort(sort_li).appendTo('#spComponentSummary .widget-list');
-  	function sort_li(a, b) {
-    		return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
-	 }	
+function sort_li(a, b) {
+	return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
+}
+
+<!-- To sort Component Summary section -->
+$("#spComponentSummary .widget-list .widget-list-item").sort(sort_li).appendTo('#spComponentSummary .widget-list');
+
+<!-- To sort Status History section -->
+ $("#spStatusHistory .widget-list .widget-list-item").sort(sort_li).appendTo(' #spStatusHistory .widget-list');
+
+	
 </script>

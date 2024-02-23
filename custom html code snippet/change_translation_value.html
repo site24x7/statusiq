@@ -4,7 +4,12 @@
 <!-- Paste the following into your Custom Footer section -->
 
 <script type="text/javascript">
-  $( document ).ready(function() {
-    $('.sp-status-bar.bg-green').text('Everything is Operational');
-  });
+setTimeout(function(){
+	$( document ).ready(function() {
+	  if(statuspages.i18N){
+		  statuspages.i18N['status.desc.1']="Everything is Operational";
+        $('body').i18n();
+	    }
+	});
+}, 300);
 </script>

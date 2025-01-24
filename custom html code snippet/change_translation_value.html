@@ -1,5 +1,5 @@
 <!-- Below code allows to change the top banner content from "All components are Operational" to the desired text, here we have changed to "Everything is Operational".  -->
-<!-- Here we have changed in the translation loading keys' value -->
+<!-- Here we have changed in the translation loading keys' value, so that the changes are applied to all the pages -->
 
 <!-- Paste the following into your Custom Footer section -->
 
@@ -8,6 +8,22 @@ setTimeout(function(){
 	$( document ).ready(function() {
 	  if(statuspages.i18N){
 		  statuspages.i18N['status.desc.1']="Everything is Operational";
+        $('body').i18n();
+	    }
+	});
+}, 300);
+</script>
+
+<!-- Below code allows to change label content from "Component Name" to the desired text, here we have changed to "Products".  -->
+<!-- Here we have changed in the translation loading keys' value, so that the changes are applied to all the pages -->
+
+<!-- Paste the following into your Custom Footer section -->
+
+<script type="text/javascript">
+setTimeout(function(){
+	$( document ).ready(function() {
+	  if(statuspages.i18N){
+		  statuspages.i18N['label.component.name']="Products";
         $('body').i18n();
 	    }
 	});

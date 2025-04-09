@@ -1,3 +1,24 @@
+
+<!-- Below code allows to change all content from "Component" to the desired text, here we have changed to "Product/products".  -->
+<!-- Paste the following into your Custom Footer section -->
+
+<script type="text/javascript">
+setTimeout(function(){
+	$('body *').contents().filter(function() {
+	  return this.nodeType === 3; // Only text nodes
+	}).each(function() {
+	  this.nodeValue = this.nodeValue.replace(/component(s?)/gi, function(match) {
+	    // Determine if the first character is uppercase
+	    var isUpper = match.charAt(0) === match.charAt(0).toUpperCase();
+	    // Check if the match is plural (ends with "s" or "S")
+	    var isPlural = /s$/i.test(match);
+	    // Choose the appropriate replacement word
+	    var base = isUpper ? "Product" : "product";
+	    return isPlural ? base + "s" : base;
+	  });
+	});
+  }, 300);
+	
 <!-- Below code allows to change the top banner content from "All components are Operational" to the desired text, here we have changed to "Everything is Operational".  -->
 <!-- Here we have changed in the translation loading keys' value, so that the changes are applied to all the pages -->
 

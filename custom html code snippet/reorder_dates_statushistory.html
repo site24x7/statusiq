@@ -1,0 +1,69 @@
+<!-- Below code allows the dates to render in the reverse order in status history section for last 7 days -->
+
+<!-- Paste the following into your Custom Footer section -->
+
+
+<script>
+
+ const table = document.querySelector('.sp-status-history');
+ const fixedColumnsCount = 2;
+ const dateRange = document.getElementById('fromToHistoryDate');
+
+  function reverseStatusHistoryHeader() {
+    // Reverse header
+    const theadRow = table.querySelector('#historyDateList, thead tr');
+    if (theadRow) {
+      const headers = Array.from(theadRow.children);
+      const fixedHeaders = headers.slice(0, fixedColumnsCount);
+      const dateHeaders = headers.slice(fixedColumnsCount).reverse();
+
+      theadRow.innerHTML = '';
+      [...fixedHeaders, ...dateHeaders].forEach(th => theadRow.appendChild(th));
+    }
+    
+    // Flip date range text
+    if (dateRange && dateRange.textContent.includes('to')) {
+      const [from, to] = dateRange.textContent.split('to').map(x => x.trim());
+      dateRange.textContent = `${to} to ${from}`;
+    }
+ }
+
+  function reverseStatusHistoryTable() {
+    if (!table) return;
+    
+    reverseStatusHistoryHeader();
+
+    // Reverse each row's date cells
+    const bodyRows = table.querySelectorAll('tbody tr');
+    bodyRows.forEach(row => {
+      const cells = Array.from(row.children);
+      const fixedCells = cells.slice(0, fixedColumnsCount);
+      const dateCells = cells.slice(fixedColumnsCount).reverse();
+
+      row.innerHTML = '';
+      [...fixedCells, ...dateCells].forEach(td => row.appendChild(td));
+    }); 
+  }
+    const prevButton = document.getElementById('historyPrev');
+    const nextButton = document.getElementById('historyNext');
+
+    if (prevButton) {
+        prevButton.addEventListener('click', function() {
+          setTimeout(reverseStatusHistoryHeader, 500);
+      });
+  }
+
+ if(nextButton) {
+        nextButton.addEventListener('click', function() {
+          setTimeout(reverseStatusHistoryHeader, 500);
+          });
+   }
+
+
+  // Run initially when page loads
+  $( document ).ready(function() {
+    setTimeout(reverseStatusHistoryTable, 500);
+  });
+
+
+</script>

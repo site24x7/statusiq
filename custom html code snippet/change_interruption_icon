@@ -1,0 +1,45 @@
+<!-- Below code is to change the interruption icon colour to status icons -->
+
+<!-- Paste the following into your Custom Footer Html section -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    setTimeout(function () {
+      
+      <!-- Major Outage Icon -->
+      $('.interruption-major-outage').each(function () {
+        $(this)
+          .removeClass('interruption interruption-major-outage icon-status-operational')
+          .addClass('icon-status-major-outage');
+      });
+
+      <!-- Partial Outage Icon -->
+      $('.interruption-partial-outage').each(function () {
+        $(this)
+          .removeClass('interruption interruption-partial-outage icon-status-operational')
+          .addClass('icon-status-partial-outage');
+      });
+
+    <!-- Degraded Performance Icon -->
+    $('.interruption-degraded-performance').each(function () {
+        $(this)
+          .removeClass('interruption interruption-degraded-performance icon-status-operational')
+          .addClass('icon-degraded-performance');
+      });
+
+    <!-- Maintenance Icon -->
+    $('.interruption-maintenance').each(function () {
+        $(this)
+          .removeClass('interruption interruption-maintenance icon-status-operational')
+          .addClass('icon-status-maintenance');
+      });
+
+    <!--Informational Icon -->
+    $('.interruption-informational').each(function () {
+        $(this)
+          .removeClass('interruption interruption-informational icon-status-operational')
+          .addClass('icon-informational');
+      });
+
+    }, 300); // Delay by 300ms if needed
+  });
+</script>

@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    let url_metrics = [
+            {
+                "unit": "alerts.time.milliseconds",
+                "perfName": "DNS_TIME",
+                "key": "reports.dns.time"
+            },
+            {
+                "unit": "alerts.time.milliseconds",
+                "perfName": "CONNECTION_TIME",
+                "key": "reports.connection.time"
+            },
+            {
+                "unit": "alerts.time.milliseconds",
+                "perfName": "FIRSTBYTE_TIME",
+                "key": "reports.first.byte"
+            }
+        ]
+    statuspages.performance_metrics_config = {};
+    statuspages.performance_metrics_config["URL"] = url_metrics;
+</script>

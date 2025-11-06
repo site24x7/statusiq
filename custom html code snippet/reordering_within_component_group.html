@@ -1,0 +1,83 @@
+<!-- Below code is to reorder the components within the Component Group in both sections  1. Component Summary section  2. Component Status History Section-->
+
+<!-- Paste the following into your Custom Footer section -->
+
+<!-- Replace the RULES with the component name and its order and in runForGroup('GroupName','RULES' ) pass the group name and the RULES with component name mentioned -->
+<script>
+  $(function () {
+    const DEFAULT_SORT = 0;
+    
+    function assignSort($items, rules = RULES, def = DEFAULT_SORT) {
+      if (!$items || !$items.length) return;
+      $items.each(function () {
+        const txt = (this.textContent || '').toLowerCase();
+        let val = def;
+        for (const [needle, score] of rules) {
+          if (txt.includes(needle)) { val = score; break; }
+        }
+        this.setAttribute('data-sort', String(val));
+        // also set CSS order for flex/grid layouts:
+        this.style.order = String(val);
+      });
+    }
+
+    function sortInPlace($items, dir = 'asc') {
+      if (!$items || $items.length < 2) return;
+      const mul = dir === 'desc' ? -1 : 1;
+      const arr = $items.toArray().sort((a, b) => {
+        const av = Number(a.getAttribute('data-sort')) || 0;
+        const bv = Number(b.getAttribute('data-sort')) || 0;
+        return (av - bv) * mul;
+      });
+      $(arr).appendTo($items.first().parent());
+    }
+
+    function assignAndSort($items, rules = RULES) {
+      assignSort($items, rules);
+      sortInPlace($items, 'asc');
+    }
+
+    function stripPrefix(id, prefix = 'sh_') {
+      return id && id.startsWith(prefix) ? id.slice(prefix.length) : id;
+    }
+
+    function getIdsByName(name) {
+      const tds = document.querySelectorAll('td.dt-cell');
+      for (const td of tds) {
+        const wb = td.querySelector('.word-break');
+        if (!wb) continue;
+        const text = Array.from(wb.childNodes)
+          .filter(n => n.nodeType === Node.TEXT_NODE)
+          .map(n => n.textContent.trim())
+          .join('');
+        if (text === name) return td.getAttribute('data-collapse');
+      }
+      return null;
+    }
+
+    function runForGroup(groupName, rules) {
+      const collapseId = getIdsByName(groupName);
+      if (!collapseId) {
+        console.warn('group id not found for', groupName);
+        return;
+      }
+      const coreId = stripPrefix(collapseId, 'sh_');
+
+      // Status History: items by data-groupid="<collapseId>"
+      assignAndSort($(`[data-groupid="${collapseId}"]`), rules);
+
+      // Component Summary: direct children under #cs_<coreId>
+      assignAndSort($(`#cs_${coreId} .group-component`), rules);
+    }
+
+    // --- Replace ---
+    const RULES = [
+      ['Site24x7 Community', 2],
+      ['Rest API', 3],
+      ['Site24x7 Static Server',1],
+    ];
+    runForGroup('Monitoring Services', RULES);
+  });
+</script>
+
+

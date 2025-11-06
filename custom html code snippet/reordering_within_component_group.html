@@ -1,0 +1,131 @@
+<!-- Below code is to reorder the components within the Component Group in both sections  1. Component Summary section  2. Component Status History Section-->
+
+<!-- Paste the following into your Custom Footer section -->
+
+<!-- Replace the Group1's component order with the component name and its order and in runForGroup('GroupName','RULES' ) pass the group name and the RULES with component name mentioned at the end of this code -->
+<script>
+  $(function () {
+    const DEFAULT_SORT = 999;
+    const norm   = s => (s || '').toLowerCase().trim();
+    const squish = s => norm(s).replace(/\s+/g, '');
+
+    function normalizeRules(rulesRaw) {
+      return (rulesRaw || []).map(([needle, score]) => ({
+        nL: norm(needle),
+        nS: squish(needle),
+        score
+      }));
+    }
+
+    function scoreText(raw, rules) {
+      const tL = norm(raw);
+      const tS = squish(raw);
+      for (const r of rules) {
+        if (tL.includes(r.nL) || tS.includes(r.nS)) return r.score;
+      }
+      return DEFAULT_SORT;
+    }
+
+    function assignSort($items, rules) {
+      if (!$items || !$items.length) return;
+      $items.each(function () {
+        const label = this.querySelector('.text-truncate')?.textContent || this.textContent || '';
+        const rank = scoreText(label, rules);
+        this.setAttribute('data-sort', String(rank));
+        this.style.order = String(rank); // works for flex/grid UIs
+      });
+    }
+
+    function sortPerParent($items, dir = 'asc') {
+      if (!$items || $items.length < 2) return;
+      const mul = dir === 'desc' ? -1 : 1;
+
+      const buckets = new Map();
+      $items.each(function () {
+        const p = this.parentElement;
+        if (!p) return;
+        if (!buckets.has(p)) buckets.set(p, []);
+        buckets.get(p).push(this);
+      });
+
+      buckets.forEach(nodes => {
+        if (nodes.length < 2) return;
+        nodes.sort((a, b) => {
+          const av = Number(a.getAttribute('data-sort')) || 0;
+          const bv = Number(b.getAttribute('data-sort')) || 0;
+          return (av - bv) * mul;
+        });
+        $(nodes).appendTo(nodes[0].parentElement);
+      });
+    }
+
+    function assignAndSort($items, rules) {
+      assignSort($items, rules);
+      sortPerParent($items, 'asc');
+    }
+
+    function stripPrefix(id, prefix = 'sh_') {
+      return id && id.startsWith(prefix) ? id.slice(prefix.length) : id;
+    }
+
+    function getIdsByName(name) {
+      const want = norm(name);
+      const tds = document.querySelectorAll('td.dt-cell');
+      for (const td of tds) {
+        const wb = td.querySelector('.word-break');
+        if (!wb) continue;
+        const text = Array.from(wb.childNodes)
+          .filter(n => n.nodeType === Node.TEXT_NODE)
+          .map(n => n.textContent.trim())
+          .join('');
+        if (norm(text) === want) return td.getAttribute('data-collapse');
+      }
+      return null;
+    }
+
+    function runForGroup(groupName, rulesRaw) {
+      const rules = normalizeRules(rulesRaw);
+      let tries = 0, maxTries = 15;
+
+      (function tick() {
+        const collapseId = getIdsByName(groupName);
+        if (!collapseId) {
+          if (tries++ < maxTries) return setTimeout(tick, 100);
+          console.warn('group id not found for', groupName);
+          return;
+        }
+
+        const coreId = stripPrefix(collapseId, 'sh_');
+
+        const $statusItems = $(`[data-groupid="${collapseId}"]`);
+        assignAndSort($statusItems, rules);
+
+        const $cs = $(`#cs_${coreId}`);
+        if ($cs.length) {
+          let $csItems = $cs.children('.group-component');
+          if (!$csItems.length) $csItems = $cs.find('.group-component'); // fallback
+          assignAndSort($csItems, rules);
+        } else if (tries++ < maxTries) {
+          return setTimeout(tick, 100);
+        }
+      })();
+    }
+
+    //Group1's component order
+    const COMPONENT_GROUP1 = [
+      ['Site24x7 Community', 2],
+      ['Rest API', 3],
+      ['Site24x7 Static Server', 1],
+    ];
+
+    //Group2's component order
+    const COMPONENT_GROUP2 = [
+      ['Site24x7 Website', 2],
+      ['Site24x7 Server', 1],
+    ];
+
+    //Pass group name and its  order
+    runForGroup('Group1', COMPONENT_GROUP1);
+    runForGroup('Group2', COMPONENT_GROUP2);
+  });
+</script>

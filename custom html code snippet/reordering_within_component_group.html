@@ -5,8 +5,17 @@
 <!-- Replace the RULES with the component name and its order and in runForGroup('GroupName','RULES' ) pass the group name and the RULES with component name mentioned -->
 <script>
   $(function () {
-    const DEFAULT_SORT = 0;
+     // --- Replace ---
+    const RULES = [
+      ['Site24x7 Community', 2],
+      ['Rest API', 3],
+      ['Site24x7 Static Server',1],
+    ];
+    runForGroup('Monitoring Services', RULES);
+
+
     
+    const DEFAULT_SORT = 0;
     function assignSort($items, rules = RULES, def = DEFAULT_SORT) {
       if (!$items || !$items.length) return;
       $items.each(function () {
@@ -69,14 +78,6 @@
       // Component Summary: direct children under #cs_<coreId>
       assignAndSort($(`#cs_${coreId} .group-component`), rules);
     }
-
-    // --- Replace ---
-    const RULES = [
-      ['Site24x7 Community', 2],
-      ['Rest API', 3],
-      ['Site24x7 Static Server',1],
-    ];
-    runForGroup('Monitoring Services', RULES);
   });
 </script>
 

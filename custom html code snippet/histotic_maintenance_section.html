@@ -1,26 +1,20 @@
 <!-- Below code is to seperate Historic Maintenance and Historic Incident in Incident History section -->
 
 <!-- Paste the following into your Custom Footer section -->
-
 <script>
 $(document).ready(function() {
   if (window.location.href.indexOf('incident_history') !== -1) {
     return;
   }
 
-  // Helper to format date as "Dec 05, 2025"
-  function formatDate(date) {
-    return date.toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-  }
-
-  // Get the last 7 days as strings matching your card headers
+  // Get the date headers from the existing cards in #spIncidentHistory
   var days = [];
-  var today = new Date();
-  for (var i = 0; i < 7; i++) {
-    var d = new Date(today);
-    d.setDate(today.getDate() - i);
-    days.push(formatDate(d));
-  }
+  $('#spIncidentHistory .card').each(function() {
+    var dateText = $(this).find('h3').first().text().trim();
+    if (dateText) {
+      days.push(dateText);
+    }
+  });
 
   var $maintenanceContainer = $('<div id="maintenance-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Maintenance</h2></div>');
   var $incidentContainer = $('<div id="incident-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Incident</h2></div>');
@@ -29,7 +23,7 @@ $(document).ready(function() {
   days.forEach(function(dayStr) {
     // Find the card for this date
     var $card = $('#spIncidentHistory .card').filter(function() {
-      return $(this).find('h3').first().text().trim().indexOf(dayStr) === 0;
+      return $(this).find('h3').first().text().trim() === dayStr;
     }).first();
 
     var $dateHeader = $('<h3 class="h4 mt-0 mb-2">' + dayStr + '</h3>');

@@ -2,52 +2,76 @@
 
 <!-- Paste the following into your Custom Footer section -->
 
-
-<script type="text/javascript">
-  $( document ).ready(function() {
+<script>
+$(document).ready(function() {
   if (window.location.href.indexOf('incident_history') !== -1) {
     return;
   }
-  var $maintenanceContainer = $('<di id="maintenance-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Maintenance</h2></div>');
-  var $incidentContainer = $('<div id="incident-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Incident</h2></div>');
-  var maintenanceFound = false;
 
-  $('#spIncidentHistory .card').each(function() {
-    var $card = $(this);
-    var $dateHeader = $card.find('h3').first().clone();
-    var $border = $card.find('.border-bottom').first().clone();
-
-    var $entries = $card.children('.py-2.mb-2, .my-3');
-    var $maintEntries = $entries.filter(function() {
-      return $(this).find('.maintenance').length > 0;
-    });
-    var $incidentEntries = $entries.filter(function() {
-      return $(this).find('.maintenance').length === 0;
-    });
-
-    if ($maintEntries.length) {
-      maintenanceFound = true;
-      var $maintCard = $('<div class="card px-3 py-2 mb-2"></div>');
-      $maintCard.append($dateHeader.clone(), $border.clone());
-      $maintEntries.each(function() { $maintCard.append($(this).clone()); });
-      $maintenanceContainer.append($maintCard);
-    }
-
-    if ($incidentEntries.length) {
-      var $incidentCard = $('<div class="card px-3 py-2 mb-2"></div>');
-      $incidentCard.append($dateHeader.clone(), $border.clone());
-      $incidentEntries.each(function() { $incidentCard.append($(this).clone()); });
-      $incidentContainer.append($incidentCard);
-    }
-  });
-
-  // If no maintenance found, add a "No historic maintenance" card
-  if (!maintenanceFound) {
-    var $noMaintCard = $('<div class="card px-3 py-2 mb-2 text-center"><div class="mb-5 mt-5"> No historic maintenance</div></div>');
-    $maintenanceContainer.append($noMaintCard);
+  // Helper to format date as "Dec 05, 2025"
+  function formatDate(date) {
+    return date.toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
   }
+
+  // Get the last 7 days as strings matching your card headers
+  var days = [];
+  var today = new Date();
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(today);
+    d.setDate(today.getDate() - i);
+    days.push(formatDate(d));
+  }
+
+  var $maintenanceContainer = $('<div id="maintenance-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Maintenance</h2></div>');
+  var $incidentContainer = $('<div id="incident-cards"><h2 class="h3 ml-0 ml-sm-3">Historic Incident</h2></div>');
+
+  // For each day, build a card for maintenance and incident
+  days.forEach(function(dayStr) {
+    // Find the card for this date
+    var $card = $('#spIncidentHistory .card').filter(function() {
+      return $(this).find('h3').first().text().trim().indexOf(dayStr) === 0;
+    }).first();
+
+    var $dateHeader = $('<h3 class="h4 mt-0 mb-2">' + dayStr + '</h3>');
+    var $border = $('<div class="border-bottom"></div>');
+
+    // Maintenance section
+    var $maintCard = $('<div class="card px-3 py-2 mb-2"></div>');
+    $maintCard.append($dateHeader.clone(), $border.clone());
+    if ($card.length) {
+      var $entries = $card.children('.py-2.mb-2, .my-3');
+      var $maintEntries = $entries.filter(function() {
+        return $(this).find('.maintenance').length > 0;
+      });
+      if ($maintEntries.length) {
+        $maintEntries.each(function() { $maintCard.append($(this).clone()); });
+      } else {
+        $maintCard.append('<div class="my-3 text-muted">No maintenance has been reported.</div>');
+      }
+    } else {
+      $maintCard.append('<div class="my-3 text-muted">No maintenance has been reported.</div>');
+    }
+    $maintenanceContainer.append($maintCard);
+
+    // Incident section
+    var $incidentCard = $('<div class="card px-3 py-2 mb-2"></div>');
+    $incidentCard.append($dateHeader.clone(), $border.clone());
+    if ($card.length) {
+      var $entries = $card.children('.py-2.mb-2, .my-3');
+      var $incidentEntries = $entries.filter(function() {
+        return $(this).find('.maintenance').length === 0;
+      });
+      if ($incidentEntries.length) {
+        $incidentEntries.each(function() { $incidentCard.append($(this).clone()); });
+      } else {
+        $incidentCard.append('<div class="my-3 text-muted">No incidents have been reported.</div>');
+      }
+    } else {
+      $incidentCard.append('<div class="my-3 text-muted">No incidents have been reported.</div>');
+    }
+    $incidentContainer.append($incidentCard);
+  });
 
   $('#spIncidentHistory').empty().append($maintenanceContainer, $incidentContainer);
 });
-
 </script>
